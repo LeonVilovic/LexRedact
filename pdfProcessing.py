@@ -122,3 +122,20 @@ def censor_every_second_word_replace_with_xxx(input_pdf, output_pdf, structured_
 
     doc.save(output_pdf)
     doc.close()
+
+def censor_area(input_pdf, output_pdf, page_number, x0, y0, x1, y1):
+    """
+    Parameters:
+        input_pdf (str): Path to the input PDF
+        output_pdf (str): Path to save the censored PDF
+        page_number (int): Page number (1-based index)
+        x0, y0, x1, y1 (float): Coordinates of the rectangle (bounding box)
+    """
+    doc = pymupdf.open(input_pdf)
+    # Select the page (convert to 0-based index)
+    page = doc[page_number - 1]
+    rect = pymupdf.Rect(x0, y0, x1, y1)
+    page.add_redact_annot(rect, fill=(0, 0, 0))
+    page.apply_redactions()
+    doc.save(output_pdf)
+    doc.close()
