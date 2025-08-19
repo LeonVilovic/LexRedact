@@ -2,7 +2,7 @@ from collections import defaultdict
 from fuzzywuzzy import fuzz
 
 
-def group_entities_fuzz_logic(entities, threshold=90):
+def group_entities_fuzz_logic(entities, threshold=85):
     """
     Args:
         entities (list[dict]): list of entities, each dict must have key 'text'

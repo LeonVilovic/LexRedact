@@ -5,6 +5,11 @@ import io
 import pytesseract
 
 def extract_text_words_from_pdf(file_path):
+    """
+    Returns structured_data extracted from .pdf file with help of pytesseract
+
+    :param file_path: path to pdf file
+    """
     structured_data = []
 
     with pymupdf.open(file_path) as doc:
@@ -80,49 +85,6 @@ def extract_text_words_from_pdf(file_path):
 
     return structured_data
 
-def censor_every_second_word_replace_with_xxx(input_pdf, output_pdf, structured_data):
-    doc = pymupdf.open(input_pdf)
-
-    for page_data in structured_data:
-        page_index = page_data["page"] - 1
-        page = doc[page_index]
-
-        for i, word_info in enumerate(page_data["words"]):
-            if i % 2 == 1:  # every second word
-                x0, y0, x1, y1 = word_info["bbox"]
-                rect = pymupdf.Rect(x0, y0, x1, y1)
-                page.add_redact_annot(rect, fill=(0, 0, 0))  # black fill
-
-        page.apply_redactions()
-
-        for i, word_info in enumerate(page_data["words"]):
-            if i % 2 == 1:
-                x0, y0, x1, y1 = word_info["bbox"]
-                rect = pymupdf.Rect(x0, y0, x1, y1)
-
-                original_word = word_info["word"]
-                replacement_text = "x" * len(original_word)
-
-                fontsize = rect.height * 0.8
-                text_width = fontsize * 0.6 * len(replacement_text)
-
-                x_text = rect.x0 + (rect.width - text_width) / 2
-
-                y_text = rect.y0 + rect.height * 0.80
-                #y_text = rect.y0 + rect.height * 0.0  # baseline at bottom of bbox
-                #y_text = rect.y0 + fontsize * 0.3  # 0.3 factor often works better for baseline
-
-                page.insert_text(
-                    (x_text, y_text),
-                    replacement_text,
-                    fontsize=fontsize,
-                    fontname="helv",
-                    color=(0, 0, 0),  # black text on black box
-                )
-
-    doc.save(output_pdf)
-    doc.close()
-
 def censor_area(input_pdf, output_pdf, page_number, x0, y0, x1, y1):
     """
     Parameters:
@@ -137,5 +99,32 @@ def censor_area(input_pdf, output_pdf, page_number, x0, y0, x1, y1):
     rect = pymupdf.Rect(x0, y0, x1, y1)
     page.add_redact_annot(rect, fill=(0, 0, 0))
     page.apply_redactions()
+    doc.save(output_pdf)
+    doc.close()
+
+def censor_areas(input_pdf, output_pdf, boxes):
+    """
+    Censors multiple rectangular areas on specified pages.
+
+    Parameters:
+        input_pdf (str): Path to the input PDF
+        output_pdf (str): Path to save the censored PDF
+        boxes (list of tuples): List of rectangles, each as (page_number, x0, y0, x1, y1)
+                                where page_number is 1-based.
+    """
+    doc = pymupdf.open(input_pdf)
+
+    # Group boxes by page number
+    boxes_by_page = {}
+    for page_number, x0, y0, x1, y1 in boxes:
+        boxes_by_page.setdefault(page_number - 1, []).append((x0, y0, x1, y1))  # 0-based index
+
+    for page_index, page_boxes in boxes_by_page.items():
+        page = doc[page_index]
+        for (x0, y0, x1, y1) in page_boxes:
+            rect = pymupdf.Rect(x0, y0, x1, y1)
+            page.add_redact_annot(rect, fill=(0, 0, 0))
+        page.apply_redactions()
+
     doc.save(output_pdf)
     doc.close()
