@@ -4,53 +4,23 @@ from pdf2image import convert_from_path
 import os
 import json
 import shutil
-# pip install classla
-import classla
 import re
 from collections import defaultdict
 
 from pdfProcessing import *
 from structuredDataToText import *
-from textProcessing import *
 from entityGrouping import *
+from classlaEntHandling import *
 
 pdf_file = "sample.pdf"
 word_data = extract_text_words_from_pdf(pdf_file)
 
-# Convert back to plain text
 plain_text = structured_data_to_text(word_data)
 
 word_data_enriched = enrich_structured_data(word_data)
 
-# Download Serbian models (only first time)
-# This downloads all processors, including NER
-#classla.download("sr")
+all_entities = return_all_ents(word_data_enriched)
 
-# Load Serbian pipeline
-nlp = classla.Pipeline("sr")
-
-all_entities = []  # will store all entities across pages
-
-for page in word_data_enriched:
-    print(f"\n--- Page {page['page']} ---")
-    doc = nlp(page["text_latin"])
-
-    if doc.ents:
-        for ent in doc.ents:
-            if ent.type == 'PER':
-                entity = {
-                    "page": page["page"],
-                    "text": ent.text,
-                    "type": ent.type,
-                    "start_char": ent.start_char,
-                    "end_char": ent.end_char
-                }
-                print(f"{entity['text']} ({entity['type']}) [{entity['start_char']}:{entity['end_char']}]")
-                all_entities.append(entity)
-    else:
-        print("No named entities found.")
-
-# Now you can use all_entities
 print("\n=== All entities collected ===")
 for e in all_entities:
     print(e)
