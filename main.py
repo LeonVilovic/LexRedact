@@ -3,8 +3,7 @@ from pdfProcessing import *
 from structuredDataToText import *
 from entityGrouping import *
 from classlaEntHandling import *
-from calcNew import *
-
+from pdfProcessingAdvanced import *
 print_logo()
 
 print_disclamer()
