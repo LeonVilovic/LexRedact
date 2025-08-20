@@ -1,12 +1,5 @@
-import pymupdf  # PyMuPDF
-from pdf2image import convert_from_path
-
 import os
 import sys
-import json
-import shutil
-import re
-from collections import defaultdict
 
 from pdfProcessing import *
 from structuredDataToText import *
