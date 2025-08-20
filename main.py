@@ -25,6 +25,7 @@ ascii_art_logo = r"""
 
 # Print in red
 print("\033[31m" + ascii_art_logo + "\033[0m")
+print("Nastavkom korišćenja ove aplikacije potvrđujete da ste pročitali i prihvatili Uslove korišćenja. Autor programa se odriče odgovornosti za eventualnu štetu nastalu korišćenjem aplikacije.")
 
 #pdf_file = "sample.pdf"
 pdf_file_path = input("Enter the PDF file path: ")
