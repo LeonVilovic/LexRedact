@@ -3,14 +3,10 @@ import classla
 
 def return_all_ents(word_data_enriched):
 
-# Download Serbian models (only first time)
-# This downloads all processors, including NER
-#classla.download("sr")
-
 # Load Serbian pipeline
     nlp = classla.Pipeline("sr")
 
-    all_entities = []  #store all entities across pages
+    all_entities = []
 
     for page in word_data_enriched:
         #print(f"\n--- Page {page['page']} ---")
@@ -32,3 +28,8 @@ def return_all_ents(word_data_enriched):
             print("No named entities found.")
     return all_entities
 
+def download_serbian_models():
+
+# Download Serbian models (only first time)
+# This downloads all processors, including NER
+    classla.download("sr")
