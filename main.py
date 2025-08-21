@@ -4,8 +4,9 @@ from structuredDataToText import *
 from entityGrouping import *
 from classlaEntHandling import *
 from pdfProcessingAdvanced import *
-print_logo()
 
+print_logo()
+print_version()
 print_disclamer()
 
 pdf_file_path = let_user_input_pdf_file_path()

@@ -1,5 +1,6 @@
 from collections import defaultdict
-from fuzzywuzzy import fuzz
+#from fuzzywuzzy import fuzz
+from rapidfuzz import fuzz
 
 
 def group_entities_fuzz_logic(entities, threshold=85):

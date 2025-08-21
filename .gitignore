@@ -13,12 +13,3 @@ venv/
 dist/
 build/
 *.egg-info/
-
-# Ignore JSON files
-*.json
-
-# Ignore PDF files
-*.pdf
-
-# Ignore text files
-*.txt
