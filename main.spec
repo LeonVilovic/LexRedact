@@ -5,7 +5,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('.venv/Lib/site-packages/obeliks/res', 'obeliks/res'), ('C:/Users/leon.vilovic/PycharmProjects/LexRedact/.venv/Lib/site-packages/reldi_tokeniser', 'reldi_tokeniser'), ('C:/Users/leon.vilovic/PycharmProjects/LexRedact/.venv/Lib/site-packages/numpy', 'numpy')],
+    datas=[('C:/Users/leon.vilovic/classla_resources', 'classla_resources'), ('.venv/Lib/site-packages/obeliks/res', 'obeliks/res'), ('C:/Users/leon.vilovic/PycharmProjects/LexRedact/.venv/Lib/site-packages/reldi_tokeniser', 'reldi_tokeniser'), ('C:/Users/leon.vilovic/PycharmProjects/LexRedact/.venv/Lib/site-packages/numpy', 'numpy')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -35,4 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['lexRedactIcon.ico'],
 )
